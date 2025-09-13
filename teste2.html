@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquivo de Literatura Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --cor-primaria: #2c3e50;
+            --cor-secundaria: #3498db;
+            --cor-destaque: #e74c3c;
+            --cor-texto: #333;
+            --cor-fundo: #f9f9f9;
+            --cor-branco: #fff;
+            --sombra: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--cor-primaria);
+            color: var(--cor-branco);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--sombra);
+        }
+        
+        .cabecalho-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--cor-secundaria);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin-left: 1.5rem;
+        }
+        
+        nav a {
+            color: var(--cor-branco);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        nav a:hover {
+            color: var(--cor-secundaria);
+        }
+        
+        .busca {
+            display: flex;
+            margin: 1rem 0;
+            width: 100%;
+        }
+        
+        .busca input {
+            padding: 0.8rem;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            width: 100%;
+            font-size: 1rem;
+        }
+        
+        .busca button {
+            background-color: var(--cor-secundaria);
+            color: var(--cor-branco);
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .destaque {
+            background: linear-gradient(135deg, #6a89cc 0%, #4a69bd 100%);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: var(--sombra);
+            margin-bottom: 2rem;
+            color: white;
+        }
+        
+        .destaque h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .destaque > p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .filtros {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .filtro-grupo {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 1.2rem;
+            border-radius: 8px;
+            flex: 1;
+            min-width: 200px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .filtro-grupo h3 {
+            margin-bottom: 0.8rem;
+            color: var(--cor-texto);
+            font-size: 1.1rem;
+        }
+        
+        .filtro-opcoes {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .filtro-opcoes label {
+            margin-bottom: 0.6rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .filtro-opcoes input {
+            margin-right: 8px;
+        }
+        
+        .grid-obras {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .carta-obra {
+            background-color: var(--cor-branco);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--sombra);
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .carta-obra:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .carta-imagem {
+            height: 180px;
+            background: linear-gradient(45deg, #3498db, #2c3e50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .carta-imagem::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .carta-conteudo {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .carta-titulo {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--cor-primaria);
+        }
+        
+        .carta-autor {
+            color: #666;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+        
+        .carta-descricao {
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+        
+        .carta-metadados {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.2rem;
+        }
+        
+        .metadado-tag {
+            background-color: var(--cor-secundaria);
+            color: var(--cor-branco);
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .metadado-tag.flash {
+            background-color: #e74c3c;
+        }
+        
+        .metadado-tag.audio {
+            background-color: #9b59b6;
+        }
+        
+        .metadado-tag.instalacao {
+            background-color: #f39c12;
+        }
+        
+        .carta-link {
+            display: inline-block;
+            background-color: var(--cor-primaria);
+            color: var(--cor-branco);
+            padding: 0.7rem 1.2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .carta-link:hover {
+            background-color: var(--cor-secundaria);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            overflow: auto;
+        }
+        
+        .modal-conteudo {
+            background-color: var(--cor-branco);
+            margin: 5% auto;
+            padding: 2.5rem;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 900px;
+            position: relative;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+        }
+        
+        .fechar-modal {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.5rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #777;
+            transition: color 0.3s;
+        }
+        
+        .fechar-modal:hover {
+            color: var(--cor-destaque);
+        }
+        
+        .abas {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+        
+        .aba {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .aba.ativa {
+            border-bottom-color: var(--cor-secundaria);
+            color: var(--cor-secundaria);
+        }
+        
+        .conteudo-aba {
+            display: none;
+        }
+        
+        .conteudo-aba.ativa {
+            display: block;
+        }
+        
+        .versoes-lista {
+            margin-bottom: 1.5rem;
+        }
+        
+        .versao-item {
+            padding: 1.2rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .versao-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .versao-item.ativa {
+            background-color: var(--cor-secundaria);
+            color: var(--cor-branco);
+            border-color: var(--cor-secundaria);
+        }
+        
+        .requisitos-obra {
+            background-color: #f9f9f9;
+            padding: 1.2rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--cor-secundaria);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        table th, table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table th {
+            background-color: #f2f2f2;
+            font-weight: 600;
+        }
+        
+        footer {
+            background-color: var(--cor-primaria);
+            color: var(--cor-branco);
+            padding: 3rem 1rem;
+            margin-top: 3rem;
+        }
+        
+        .rodape-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .rodape-secao {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .rodape-secao h3 {
+            margin-bottom: 1.2rem;
+            color: var(--cor-secundaria);
+        }
+        
+        .rodape-secao ul {
+            list-style: none;
+        }
+        
+        .rodape-secao li {
+            margin-bottom: 0.7rem;
+        }
+        
+        .rodape-secao a {
+            color: var(--cor-branco);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .rodape-secao a:hover {
+            color: var(--cor-secundaria);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 1.5rem;
+            width: 100%;
+            opacity: 0.8;
+        }
+        .carta-imagem {
+            height: 180px;
+            background: linear-gradient(45deg, #3498db, #2c3e50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .carta-imagem img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .carta-obra:hover .carta-imagem img {
+            transform: scale(1.05);
+        }
+        
+        .carta-imagem::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .fallback-icon {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .cabecalho-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+            }
+            
+            nav li {
+                margin: 0 1rem 0.5rem 0;
+            }
+            
+            .busca input {
+                width: 100%;
+            }
+            
+            .modal-conteudo {
+                width: 95%;
+                margin: 10% auto;
+                padding: 1.5rem;
+            }
+            
+            .destaque {
+                padding: 1.5rem;
+            }
+            
+            .grid-obras {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <div class="cabecalho-container">
+            <div class="logo">
+                <i class="fas fa-book-digital"></i>
+                <span>Arquivo de Literatura Digital</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Início</a></li>
+                    <li><a href="#">Obras</a></li>
+                    <li><a href="#">Autores</a></li>
+                    <li><a href="#">Sobre</a></li>
+                    <li><a href="#">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="cabecalho-container">
+            <div class="busca">
+                <input type="text" placeholder="Buscar obras, autores, palavras-chave...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <section class="destaque">
+            <h2>Obras em Destaque</h2>
+            <p>Explore algumas das obras mais significativas da literatura digital em nosso acervo. Cada obra apresenta características únicas e requisitos técnicos específicos.</p>
+            <div class="grid-obras">
+                <div class="carta-obra">
+                    <div class="carta-imagem"><img src="https://nova-escola-producao.s3.amazonaws.com/BM9E7Hg3kETJbNGSYcP7d4FN5GX2AQcUjzJMc5r6QWDGcxTBhGKbVt7wcb97/introducao" alt=""></div>
+                    <div class="carta-conteudo">
+                        <h3 class="carta-titulo">Poemas Interativos</h3>
+                        <p class="carta-autor">Autor: Ana Silva</p>
+                        <p class="carta-descricao">Uma coleção de poemas que se transformam com a interação do leitor, criando novas camadas de significado.</p>
+                        <div class="carta-metadados">
+                            <span class="metadado-tag">Hipermídia</span>
+                            <span class="metadado-tag flash">Flash</span>
+                            <span class="metadado-tag">3 versões</span>
+                        </div>
+                        <a href="#" class="carta-link" onclick="abrirModalObra()">Ver Detalhes</a>
+                    </div>
+                </div>
+                
+                <div class="carta-obra">
+                    <div class="carta-imagem"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqD_-7PuwnDwtWMSPvpGMh_JAllDlD0RkwwQ&s" alt=""></i></div>
+                    <div class="carta-conteudo">
+                        <h3 class="carta-titulo">Som e Significado</h3>
+                        <p class="carta-autor">Autor: Carlos Mendonça</p>
+                        <p class="carta-descricao">Narrativa sonora imersiva que explora as fronteiras entre literatura e experiência auditiva.</p>
+                        <div class="carta-metadados">
+                            <span class="metadado-tag audio">Áudio</span>
+                            <span class="metadado-tag instalacao">Instalação</span>
+                            <span class="metadado-tag">2 versões</span>
+                        </div>
+                        <a href="#" class="carta-link" onclick="abrirModalObra()">Ver Detalhes</a>
+                    </div>
+                </div>
+                
+                <div class="carta-obra">
+                    <div class="carta-imagem"><img src="https://resumos.mesalva.com/wp-content/uploads/2020/08/1c-1.jpg" alt=""></i></div>
+                    <div class="carta-conteudo">
+                        <h3 class="carta-titulo">Imagens que Contam</h3>
+                        <p class="carta-autor">Autora: Beatriz Ramos</p>
+                        <p class="carta-descricao">Uma experiência visual onde imagens estáticas se transformam em narrativas complexas através da interação.</p>
+                        <div class="carta-metadados">
+                            <span class="metadado-tag">Visual</span>
+                            <span class="metadado-tag">JavaScript</span>
+                            <span class="metadado-tag">4 versões</span>
+                        </div>
+                        <a href="#" class="carta-link" onclick="abrirModalObra()">Ver Detalhes</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Todas as Obras</h2>
+            <p>Explore nosso acervo completo de literatura digital, com obras que abrangem desde as primeiras experimentações até as produções mais recentes.</p>
+            <div class="filtros">
+                <div class="filtro-grupo">
+                    <h3>Tipo de Mídia</h3>
+                    <div class="filtro-opcoes">
+                        <label><input type="checkbox"> Texto</label>
+                        <label><input type="checkbox"> Áudio</label>
+                        <label><input type="checkbox"> Imagem</label>
+                        <label><input type="checkbox"> Vídeo</label>
+                        <label><input type="checkbox"> Interativo</label>
+                    </div>
+                </div>
+                
+                <div class="filtro-grupo">
+                    <h3>Requisitos Técnicos</h3>
+                    <div class="filtro-opcoes">
+                        <label><input type="checkbox"> Flash</label>
+                        <label><input type="checkbox"> Instalação Local</label>
+                        <label><input type="checkbox"> Navegador Moderno</label>
+                        <label><input type="checkbox"> JavaScript</label>
+                    </div>
+                </div>
+                
+                <div class="filtro-grupo">
+                    <h3>Período</h3>
+                    <div class="filtro-opcoes">
+                        <label><input type="checkbox"> Anos 1990</label>
+                        <label><input type="checkbox"> Anos 2000</label>
+                        <label><input type="checkbox"> Anos 2010</label>
+                        <label><input type="checkbox"> Anos 2020</label>
+                    </div>
+                </div>
+            </div>
+                        <div class="grid-obras">
+                <div class="carta-obra">
+                    <div class="carta-imagem"><i class="fas fa-book-open"></i></div>
+                    <div class="carta-conteudo">
+                        <h3 class="carta-titulo">Poemas Interativos</h3>
+                        <p class="carta-autor">Autor: Ana Silva</p>
+                        <p class="carta-descricao">Uma coleção de poemas que se transformam com a interação do leitor, criando novas camadas de significado.</p>
+                        <div class="carta-metadados">
+                            <span class="metadado-tag">Hipermídia</span>
+                            <span class="metadado-tag flash">Flash</span>
+                            <span class="metadado-tag">3 versões</span>
+                        </div>
+                        <a href="#" class="carta-link" onclick="abrirModalObra()">Ver Detalhes</a>
+                    </div>
+                </div>
+                
+                <div class="carta-obra">
+                    <div class="carta-imagem"><i class="fas fa-headphones"></i></div>
+                    <div class="carta-conteudo">
+                        <h3 class="carta-titulo">Som e Significado</h3>
+                        <p class="carta-autor">Autor: Carlos Mendonça</p>
+                        <p class="carta-descricao">Narrativa sonora imersiva que explora as fronteiras entre literatura e experiência auditiva.</p>
+                        <div class="carta-metadados">
+                            <span class="metadado-tag audio">Áudio</span>
+                            <span class="metadado-tag instalacao">Instalação</span>
+                            <span class="metadado-tag">2 versões</span>
+                        </div>
+                        <a href="#" class="carta-link" onclick="abrirModalObra()">Ver Detalhes</a>
+                    </div>
+                </div>
+                
+                <div class="carta-obra">
+                    <div class="carta-imagem"><i class="fas fa-paint-brush"></i></div>
+                    <div class="carta-conteudo">
+                        <h3 class="carta-titulo">Imagens que Contam</h3>
+                        <p class="carta-autor">Autora: Beatriz Ramos</p>
+                        <p class="carta-descricao">Uma experiência visual onde imagens estáticas se transformam em narrativas complexas através da interação.</p>
+                        <div class="carta-metadados">
+                            <span class="metadado-tag">Visual</span>
+                            <span class="metadado-tag">JavaScript</span>
+                            <span class="metadado-tag">4 versões</span>
+                        </div>
+                        <a href="#" class="carta-link" onclick="abrirModalObra()">Ver Detalhes</a>
+                    </div>
+                </div>
+            
+        </section>
+    </main>
+    
+    <div id="modalObra" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar-modal" onclick="fecharModalObra()">&times;</span>
+            
+            <h2>Poemas Interativos</h2>
+            <p class="carta-autor">Autor: Ana Silva | Data de Publicação: 15/03/2010</p>
+            
+            <div class="abas">
+                <div class="aba ativa" onclick="mudarAba(event, 'sobre')">Sobre</div>
+                <div class="aba" onclick="mudarAba(event, 'versoes')">Versões</div>
+                <div class="aba" onclick="mudarAba(event, 'metadados')">Metadados</div>
+                <div class="aba" onclick="mudarAba(event, 'acesso')">Como Acessar</div>
+            </div>
+            
+            <div id="sobre" class="conteudo-aba ativa">
+                <p>Poemas Interativos é uma obra pioneira na literatura digital brasileira que explora as possibilidades de interação do leitor com o texto poético. Cada poema se transforma e se reconstrói basedo nas escolhas do leitor, criando uma experiência única a cada leitura.</p>
+                
+                <div class="requisitos-obra">
+                    <h4>Requisitos Técnicos</h4>
+                    <p>Esta obra requer: Flash Player (versões antigas) ou emulador Ruffle (versões modernas). Para a versão de instalação local, é necessário Windows 7 ou superior.</p>
+                </div>
+                
+                <h4>Palavras-chave</h4>
+                <p>poesia digital, narrativa não-linear, ficção interativa, literatura experimental</p>
+            </div>
+            
+            <div id="versoes" class="conteudo-aba">
+                <h3>Histórico de Versões</h3>
+                <p>Esta obra passou por várias versões ao longo do tempo:</p>
+                
+                <div class="versoes-lista">
+                    <div class="versao-item ativa" onclick="selecionarVersao(event, 'v1')">
+                        <strong>Versão 3.0</strong> (2020) - Versão atual, adaptada para HTML5 e JavaScript
+                    </div>
+                    <div class="versao-item" onclick="selecionarVersao(event, 'v2')">
+                        <strong>Versão 2.1</strong> (2015) - Adicionada compatibilidade com dispositivos móveis
+                    </div>
+                    <div class="versao-item" onclick="selecionarVersao(event, 'v3')">
+                        <strong>Versão 1.0</strong> (2010) - Versão original em Flash
+                    </div>
+                </div>
+                
+                <div id="detalhes-versao">
+                    <h4>Detalhes da Versão Selecionada</h4>
+                    <p><strong>Versão 3.0 (2020)</strong></p>
+                    <p>Esta versão foi completamente reformulada para utilizar tecnologias modernas após a descontinuação do Flash. Mantém toda a funcionalidade original com melhor desempenho e compatibilidade.</p>
+                    <p><strong>Alterações principais:</strong></p>
+                    <ul>
+                        <li>Migração de Flash para HTML5/CSS3/JavaScript</li>
+                        <li>Interface responsiva para dispositivos móveis</li>
+                        <li>Melhoria na performance de carregamento</li>
+                        <li>Novos poemas adicionados</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="metadados" class="conteudo-aba">
+                <h3>Metadados Técnicos</h3>
+                <table>
+                    <tr>
+                        <th>Campo</th>
+                        <th>Valor</th>
+                    </tr>
+                    <tr>
+                        <td>Identificador Único</td>
+                        <td>LD-2010-003</td>
+                    </tr>
+                    <tr>
+                        <td>Formato Original</td>
+                        <td>SWF (Adobe Flash)</td>
+                    </tr>
+                    <tr>
+                        <td>Formato Preservado</td>
+                        <td>HTML5 + JavaScript</td>
+                    </tr>
+                    <tr>
+                        <td>Linguagem</td>
+                        <td>Português</td>
+                    </tr>
+                    <tr>
+                        <td>Tamanho do Arquivo</td>
+                        <td>24.5 MB</td>
+                    </tr>
+                    <tr>
+                        <td>Licença</td>
+                        <td>Creative Commons BY-NC-SA</td>
+                    </tr>
+                    <tr>
+                        <td>Duração Média</td>
+                        <td>45 minutos</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div id="acesso" class="conteudo-aba">
+                <h3>Como Acessar esta Obra</h3>
+                <p>Esta obra está disponível em diferentes formatos dependendo da versão:</p>
+                
+                <h4>Versão Atual (2020)</h4>
+                <p>Pode ser acessada diretamente pelo navegador: <a href="#" style="color: var(--cor-secundaria);">https://arquivold.exemplo/poemas-interativos</a></p>
+                
+                <h4>Versões Históricas</h4>
+                <p>Para acessar versões anteriores, pode ser necessário:</p>
+                <ul>
+                    <li>Usar um emulador de Flash como o Ruffle</li>
+                    <li>Baixar e instalar software específico</li>
+                    <li>Configurar uma máquina virtual com o sistema operacional original</li>
+                </ul>
+                
+                <div class="requisitos-obra">
+                    <h4>Instruções para Versão Flash</h4>
+                    <p>1. Instale o emulador Ruffle em seu navegador</p>
+                    <p>2. Acesse a versão arquivada em: <a href="#" style="color: var(--cor-secundaria);">https://arquivold.exemplo/poemas-interativos-flash</a></p>
+                    <p>3. Alternativamente, faça download da versão para instalação local</p>
+                </div>
+                
+                <p>Entre em contato conosco para mais informações sobre o acesso a versões históricas.</p>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <a href="#" class="carta-link">Acessar Esta Obra</a>
+                <a href="#" style="margin-left: 1rem; color: var(--cor-secundaria);">Download dos Metadados Completos</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="rodape-container">
+            <div class="rodape-secao">
+                <h3>Arquivo de Literatura Digital</h3>
+                <p>Um arquivo dedicado à preservação e documentação de obras de literatura digital. Nosso acervo inclui obras desde os primórdios da literatura digital até as produções contemporâneas.</p>
+            </div>
+            
+            <div class="rodape-secao">
+                <h3>Links Rápidos</h3>
+                <ul>
+                    <li><a href="#">Sobre o Projeto</a></li>
+                    <li><a href="#">Políticas de Preservação</a></li>
+                    <li><a href="#">Contribuir com o Acervo</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="rodape-secao">
+                <h3>Contato</h3>
+                <p><i class="fas fa-envelope"></i> contato@arquivold.com</p>
+                <p><i class="fas fa-phone"></i> +55 (XX) XXXX-XXXX</p>
+                <p><i class="fas fa-map-marker-alt"></i> Universidade Federal, Departamento de Literatura</p>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Arquivo de Literatura Digital. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Funções para controle do modal
+        function abrirModalObra() {
+            document.getElementById('modalObra').style.display = 'block';
+        }
+        
+        function fecharModalObra() {
+            document.getElementById('modalObra').style.display = 'none';
+        }
+        
+        // Fechar modal clicando fora dele
+        window.onclick = function(event) {
+            const modal = document.getElementById('modalObra');
+            if (event.target == modal) {
+                fecharModalObra();
+            }
+        }
+        
+        // Controle de abas
+        function mudarAba(evt, abaId) {
+            // Esconder todos os conteúdos de aba
+            const conteudosAbas = document.getElementsByClassName('conteudo-aba');
+            for (let i = 0; i < conteudosAbas.length; i++) {
+                conteudosAbas[i].classList.remove('ativa');
+            }
+            
+            // Desativar todas as abas
+            const abas = document.getElementsByClassName('aba');
+            for (let i = 0; i < abas.length; i++) {
+                abas[i].classList.remove('ativa');
+            }
+            
+            // Ativar a aba clicada
+            document.getElementById(abaId).classList.add('ativa');
+            evt.currentTarget.classList.add('ativa');
+        }
+        
+        // Seleção de versões
+        function selecionarVersao(evt, versaoId) {
+            // Desativar todos os itens de versão
+            const itensVersao = document.getElementsByClassName('versao-item');
+            for (let i = 0; i < itensVersao.length; i++) {
+                itensVersao[i].classList.remove('ativa');
+            }
+            
+            // Ativar o item clicado
+            evt.currentTarget.classList.add('ativa');
+            
+            // Carregar os detalhes da versão selecionada
+            let detalhes = "";
+            if (versaoId === 'v1') {
+                detalhes = `
+                    <h4>Detalhes da Versão Selecionada</h4>
+                    <p><strong>Versão 3.0 (2020)</strong></p>
+                    <p>Esta versão foi completamente reformulada para utilizar tecnologias modernas após a descontinuação do Flash. Mantém toda a funcionalidade original com melhor desempenho e compatibilidade.</p>
+                    <p><strong>Alterações principais:</strong></p>
+                    <ul>
+                        <li>Migração de Flash para HTML5/CSS3/JavaScript</li>
+                        <li>Interface responsiva para dispositivos móveis</li>
+                        <li>Melhoria na performance de carregamento</li>
+                        <li>Novos poemas adicionados</li>
+                    </ul>
+                `;
+            } else if (versaoId === 'v2') {
+                detalhes = `
+                    <h4>Detalhes da Versão Selecionada</h4>
+                    <p><strong>Versão 2.1 (2015)</strong></p>
+                    <p>Primeira adaptação para dispositivos móveis, ainda utilizando tecnologia Flash mas com suporte limitado a tablets e smartphones.</p>
+                    <p><strong>Alterações principais:</strong></p>
+                    <ul>
+                        <li>Interface adaptada para touchscreen</li>
+                        <li>Suporte experimental para Android e iOS</li>
+                        <li>Otimização de recursos para melhor performance</li>
+                        <li>Correção de bugs da versão original</li>
+                    </ul>
+                `;
+            } else {
+                detalhes = `
+                    <h4>Detalhes da Versão Selecionada</h4>
+                    <p><strong>Versão 1.0 (2010)</strong></p>
+                    <p>Versão original da obra, desenvolvida em Adobe Flash. Representa o estado inicial da obra como foi concebida pela autora.</p>
+                    <p><strong>Características técnicas:</strong></p>
+                    <ul>
+                        <li>Desenvolvido em Adobe Flash CS5</li>
+                        <li>Otimizado para resolução 1024x768</li>
+                        <li>Requeria Flash Player 10 ou superior</li>
+                        <li>Compatível apenas com desktop</li>
+                    </ul>
+                `;
+            }
+            
+            document.getElementById('detalhes-versao').innerHTML = detalhes;
+        }
+    </script>
+</body>
+</html>
